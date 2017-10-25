@@ -15,9 +15,26 @@ import ev3dev.ev3 as ev3
 import math
 import time
 
-
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
     
-    # TODO: Implement the Snatch3r class as needed when working the sandox exercises
+    # DONE: Implement the Snatch3r class as needed when working the sandbox exercises
     # (and delete these comments)
+    def __init__(self):
+        # Connect two large motors on output ports B and C
+        self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+        # Check that the motors are actually connected
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+
+
+    def drive_inches(self, distance, sp):
+        ev3.Sound.speak("Driving")
+        self.left_motor.run_to_rel_pos(position_sp=distance*90, speed_sp=sp)
+        self.right_motor.run_to_rel_pos(position_sp=distance * 90, speed_sp=sp)
+        self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
+        self.right_motor.wait_while(self.right_motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
+        ev3.Sound.speak("Goodbye")
