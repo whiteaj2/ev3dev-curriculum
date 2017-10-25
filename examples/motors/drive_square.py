@@ -33,6 +33,7 @@ def main():
         drive_straight(left_motor, right_motor, edge_length_drive_time_s)
         turn_90(left_motor, right_motor)
         time.sleep(0.5)
+    drive_straight(left_motor, right_motor, 20)
     shutdown(left_motor, right_motor)
 
 
@@ -46,8 +47,8 @@ def drive_straight(left_motor, right_motor, time_s):
       :type time_s: int | float
     """
     print("Driving straight...")
-    left_motor.run_forever(speed_sp=400)
-    right_motor.run_forever(speed_sp=400)
+    left_motor.run_forever(speed_sp=800)
+    right_motor.run_forever(speed_sp=800)
     time.sleep(time_s)
     left_motor.stop(stop_action="brake")
     right_motor.stop(stop_action="brake")
