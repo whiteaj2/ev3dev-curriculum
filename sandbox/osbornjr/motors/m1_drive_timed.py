@@ -8,10 +8,10 @@ to collect data, then make an equation to figure out the time needed given the d
 
 Note: If future modules you will learn different (BETTER) ways to drive a given distance.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Joshua Osborne.
+"""  # Done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
-# TODO: 2. Get a yardstick or tape measure to do some testing with /examples/motors/drive_input_speed.py
+# Done: 2. Get a yardstick or tape measure to do some testing with /examples/motors/drive_input_speed.py
 #   Have your whole team work this activity together.
 #   For your first test run drive_input_speed (via python drive_input_speed from that folder using SSH).
 #   Enter these values for your first test and record the distance below as XXX for 100.
@@ -29,18 +29,18 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 #
 #  Record your calculated speed conversions here:
 #   Tests @ 10 seconds:
-#     100 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     200 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     300 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     400 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
+#     100 degrees / second  -->  traveled  inches  -->   inches / second
+#     200 degrees / second  -->  traveled  inches  -->   inches / second
+#     300 degrees / second  -->  traveled  inches  -->   inches / second
+#     400 degrees / second  -->  traveled  inches  -->   inches / second
 #   Tests @ 5 seconds:
-#     500 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     600 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     700 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     800 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     900 degrees / second  -->  traveled XXX inches  -->  YYY inches / second (probably no faster than 800)
+#     500 degrees / second  -->  traveled  inches  -->   inches / second
+#     600 degrees / second  -->  traveled  inches  -->   inches / second
+#     700 degrees / second  -->  traveled  inches  -->   inches / second
+#     800 degrees / second  -->  traveled  inches  -->   inches / second
+#     900 degrees / second  -->  traveled  inches  -->   inches / second (probably no faster than 800)
 #
-# TODO: 3. Make an equation
+# Done: 3. Make an equation
 #   Derive from that information a way to convert a given degrees per second speed into an inches / second speed.
 #     If you plotted the data with degrees / second on the x axis and inches per second on the y axis you would find the
 #       data is fairly linear, so you could use a    y = m * x + b   line approximation formula.  Excel could even help
@@ -58,27 +58,69 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 #   Note: To repeat again, in later modules you will learn different (better) ways to travel a given distance using
 #     motor encoders, so just make a simple rough approximation here, since later we'll do it better in a different way.
 #
-# TODO: 3. Copy the content of the /examples/motors/drive_input_speed.py program and place it below these comments.
+# Done: 3. Copy the content of the /examples/motors/drive_input_speed.py program and place it below these comments.
 #   Change the initial print and speak commands to reflect this module, like this...
 #    print("--------------------------------------------")
 #    print("  Timed Driving")
 #    print("--------------------------------------------")
 #    ev3.Sound.speak("Timed Driving").wait()
-# TODO: 4. Change the input questions from:
+
+import ev3dev.ev3 as ev3
+import time
+
+
+def main():
+    print("--------------------------------------------")
+    print("  Timed Driving")
+    print("--------------------------------------------")
+    ev3.Sound.speak("Timed Driving").wait()
+
+    # Connect two large motors on output ports B and C
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+    # Check that the motors are actually connected
+    assert left_motor.connected
+    assert right_motor.connected
+
+    drive_time = 1  # Any value other than 0.
+    while drive_time != 0:
+        speed_degrees = int(input("Enter a speed (0 to 900 dps): "))
+        distance = int(input("Distance to travel(inches): "))
+        if speed_degrees == 0 or distance == 0:
+            break
+        left_motor.run_forever(speed_sp=speed_degrees)
+        right_motor.run_forever(speed_sp=speed_degrees)
+        speed_inches = (4/360)*speed_degrees
+        drive_time = distance / speed_inches
+        time.sleep(drive_time)
+        left_motor.stop()
+        right_motor.stop(stop_action="brake")
+
+    print("Goodbye!")
+    ev3.Sound.speak("Goodbye").wait()
+
+
+# ----------------------------------------------------------------------
+# Calls  main  to start the ball rolling.
+# ----------------------------------------------------------------------
+main()
+
+# Done: 4. Change the input questions from:
 #   Enter a speed for the left motor (0 to 900 dps):
 #   Enter a speed for the right motor (0 to 900 dps):
 #   Enter a time to drive (seconds):
 # to:
 #   Enter a speed (0 to 900 dps):
 #   Distance to travel (inches):
-# TODO: 5. Write the code necessary to make the robot drive at that speed going roughly that distance.
+# Done: 5. Write the code necessary to make the robot drive at that speed going roughly that distance.
 #   Note, in this module, you are REQUIRED to use the pattern...
 #      run_forever()
 #      time.sleep(some_amount)
 #      stop()
 #   You may NOT use the advanced motor commands at this time like: run_to_abs_pos, run_to_rel_pos, or run_timed.
-# TODO: 6. Modify the program so that it will exit immediately if the answer to   any   question is 0.
-# TODO: 7. Formally test your work. When you think you have the problem complete run these tests to be sure:
+# Done: 6. Modify the program so that it will exit immediately if the answer to   any   question is 0.
+# Done: 7. Formally test your work. When you think you have the problem complete run these tests to be sure:
 #   200 dps 24 inches (make sure it drives within 6 inches of the target distance)
 #   400 dps 24 inches (make sure it drives within 6 inches of the target distance)
 #   800 dps 24 inches (make sure it drives within 6 inches of the target distance)
@@ -86,6 +128,6 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 #   400 dps 36 inches (make sure it drives within 9 inches of the target distance)
 # Do more tests if you see fit.  Ideally you should be +/- 25% of the target goal.
 #
-# TODO: 8. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
+# Done: 8. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
 #
 #  Observation you should make, the pattern run_forever-->time.sleep-->stop naturally blocks code execution until done.
