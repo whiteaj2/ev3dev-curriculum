@@ -29,16 +29,16 @@ Authors: David Fisher and Joshua Osborne.
 #
 #  Record your calculated speed conversions here:
 #   Tests @ 10 seconds:
-#     100 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     200 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     300 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     400 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
+#     100 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     200 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     300 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     400 degrees / second  -->  traveled  inches  -->  YYY inches / second
 #   Tests @ 5 seconds:
-#     500 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     600 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     700 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     800 degrees / second  -->  traveled XXX inches  -->  YYY inches / second
-#     900 degrees / second  -->  traveled XXX inches  -->  YYY inches / second (probably no faster than 800)
+#     500 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     600 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     700 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     800 degrees / second  -->  traveled  inches  -->  YYY inches / second
+#     900 degrees / second  -->  traveled  inches  -->  YYY inches / second (probably no faster than 800)
 #
 # TODO: 3. Make an equation
 #   Derive from that information a way to convert a given degrees per second speed into an inches / second speed.
@@ -58,12 +58,51 @@ Authors: David Fisher and Joshua Osborne.
 #   Note: To repeat again, in later modules you will learn different (better) ways to travel a given distance using
 #     motor encoders, so just make a simple rough approximation here, since later we'll do it better in a different way.
 #
-# TODO: 3. Copy the content of the /examples/motors/drive_input_speed.py program and place it below these comments.
+# Done: 3. Copy the content of the /examples/motors/drive_input_speed.py program and place it below these comments.
 #   Change the initial print and speak commands to reflect this module, like this...
 #    print("--------------------------------------------")
 #    print("  Timed Driving")
 #    print("--------------------------------------------")
 #    ev3.Sound.speak("Timed Driving").wait()
+
+import ev3dev.ev3 as ev3
+import time
+
+
+def main():
+    print("--------------------------------------------")
+    print("  Timed Driving")
+    print("--------------------------------------------")
+    ev3.Sound.speak("Timed Driving").wait()
+
+    # Connect two large motors on output ports B and C
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+    # Check that the motors are actually connected
+    assert left_motor.connected
+    assert right_motor.connected
+
+    time_s = 1  # Any value other than 0.
+    while time_s != 0:
+        speed_degrees = int(input("Enter a speed (0 to 900 dps): "))
+        distance = int(input("Distance to travel(inches): "))
+        left_motor.run_forever(speed_sp=speed)
+        right_motor.run_forever(speed_sp=speed)
+        speed_inches = (4/360)*speed_degrees
+        time.sleep(distance / speed_inches)
+        left_motor.stop()
+        right_motor.stop(stop_action="brake")
+
+    print("Goodbye!")
+    ev3.Sound.speak("Goodbye").wait()
+
+
+# ----------------------------------------------------------------------
+# Calls  main  to start the ball rolling.
+# ----------------------------------------------------------------------
+main()
+
 # TODO: 4. Change the input questions from:
 #   Enter a speed for the left motor (0 to 900 dps):
 #   Enter a speed for the right motor (0 to 900 dps):

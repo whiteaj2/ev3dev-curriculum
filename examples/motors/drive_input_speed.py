@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+s#!/usr/bin/env python3
 """
 This demo lets you see how to use an input prompt to test different drive speeds.
 
