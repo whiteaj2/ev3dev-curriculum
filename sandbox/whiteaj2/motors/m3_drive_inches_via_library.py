@@ -23,12 +23,12 @@ Authors: David Fisher and Andrew White.
 #  to do a VCS --> Update project...
 # Once the library is implemented each team member should be able to run their version of this code on the robot.
 
-# TODO: 4. Formally test your work. When you think you have the problem complete run these tests:
+# DONE: 4. Formally test your work. When you think you have the problem complete run these tests:
 #   500 dps 24 inches
 #   500 dps -24 inches
 #   Should work exactly as before with these tests and more.  It should beep after the movement is over.
 
-# TODO: 5. Call over a TA or instructor to sign your team's checkoff sheet and do a code review of your library.
+# DONE: 5. Call over a TA or instructor to sign your team's checkoff sheet and do a code review of your library.
 #
 # Observations you should make, you are a TEAM and making great library methods will make life easier for everyone.
 

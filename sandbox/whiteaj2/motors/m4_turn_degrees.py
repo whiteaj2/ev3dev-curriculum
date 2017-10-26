@@ -3,10 +3,10 @@ This module lets you extend what you have learned about driving and extend it to
 
 Much like you have a drive_inches command in your library, you will now make a turn_degrees method.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Andrew White.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
-# TODO: 2. Copy the contents of m3_drive_inches_via_library.py and paste that text into this file below these comments.
+# DONe: 2. Copy the contents of m3_drive_inches_via_library.py and paste that text into this file below these comments.
 #   Change the initial print and speak commands to reflect this module, like this...
 #     print("--------------------------------------------")
 #     print(" Turn degrees")
@@ -14,7 +14,7 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 #     ev3.Sound.speak("Turn degrees").wait()
 #   You will need to modify that code for this problem, but it is a handy starting point.
 
-# TODO: 3. Create a method in your library called turn_degrees that receives the degrees_to_turn and turn_speed_sp
+# DONE: 3. Create a method in your library called turn_degrees that receives the degrees_to_turn and turn_speed_sp
 #   To help you get started here is a potential method signature line that will be in your library.
 #
 #   def turn_degrees(self, degrees_to_turn, turn_speed_sp):
@@ -48,3 +48,39 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 # TODO: 6. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
 #
 # Observations you should make, using run_to_rel_pos is useful for accurate turns, but testing takes time.
+
+import ev3dev.ev3 as ev3
+import robot_controller as robo
+
+
+def main():
+    # --------------------------------------------------------------
+    # We have already implemented this module for you.
+    # There are no TODOs in the code.  Do NOT modify it.
+    # You are not allowed to make any changes to this code.
+    # --------------------------------------------------------------
+    print("--------------------------------------------")
+    print("Turn degrees")
+    print("--------------------------------------------")
+    ev3.Sound.speak("Turn degrees").wait()
+    robot = robo.Snatch3r()
+
+    while True:
+        speed_deg_per_second = int(input("Speed (0 to 900 dps): "))
+        if speed_deg_per_second == 0:
+            break
+        turn_degrees = int(input("Enter a turn (degrees)"))
+        if turn_degrees == 0:
+            break
+
+        robot.turn_degrees(turn_degrees,speed_deg_per_second)
+        ev3.Sound.beep().wait()  # Fun little beep
+
+    print("Goodbye!")
+    ev3.Sound.speak("Goodbye").wait()
+
+
+# ----------------------------------------------------------------------
+# Calls  main  to start the ball rolling.
+# ----------------------------------------------------------------------
+main()
