@@ -42,50 +42,41 @@ def main():
     # # ev3.Leds.all_off()  # Could also use this single command if turning both LEDs off.
     print('Press the Back button on the EV3 to exit this program.')
 
-    def handle_up_down_button(state, name):
-        current_color_state = 0
-        colors = [ev3.Leds.BLACK,  # This list is useful for the down button in TO DO 4.
-                      ev3.Leds.GREEN,
-                      ev3.Leds.RED,
-                      # ev3.Leds.ORANGE,  # Too close to another color in my opinion
-                      # ev3.Leds.YELLOW,  # Too close to another color in my opinion
-                      ev3.Leds.AMBER]
-        if state:
-            if name == "up":
-                ev3.Leds.all_off()
-            if name == "left":
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-            if name == "right":
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-            while name == "down":
-                ev3.Leds.set_color(ev3.Leds.LEFT, colors[current_color_state])
-                ev3.Leds.set_color(ev3.Leds.RIGHT, colors[current_color_state])
-                current_color_state += 1
-                time.sleep(0.01)
-                if current_color_state >= len(colors):
-                    current_color_state = 0
-                if name != "down":
-                    break
-
-            print(name, "was pressed")
-        else:
-            print(name, "was released")
+    current_color_state = 0
+    colors = [ev3.Leds.BLACK,  # This list is useful for the down button in TO DO 4.
+              ev3.Leds.GREEN,
+              ev3.Leds.RED,
+              # ev3.Leds.ORANGE,  # Too close to another color in my opinion
+              # ev3.Leds.YELLOW,  # Too close to another color in my opinion
+              ev3.Leds.AMBER]
 
     # Buttons on EV3
     btn = ev3.Button()
-    btn.on_up = lambda state: handle_up_down_button(state, "up")
-    btn.on_left = lambda state: handle_up_down_button(state, "left")
-    btn.on_right = lambda state: handle_up_down_button(state, "right")
-    btn.on_down = lambda state: handle_up_down_button(state, "down")
+
     # Also use btn.on_left, btn.on_right, btn.on_backspace
 
     while True:
-        btn.process()
 
         if btn.backspace:
             break
+        if btn.up:
+            print('up')
+            ev3.Leds.all_off()
+        if btn.left:
+            print('left')
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        if btn.right:
+            print('right')
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+        if btn.down:
+            print('down')
+            ev3.Leds.set_color(ev3.Leds.LEFT, colors[current_color_state])
+            ev3.Leds.set_color(ev3.Leds.RIGHT, colors[current_color_state])
+            current_color_state = (current_color_state + 1) % len(colors)
+
+        btn.process()
         time.sleep(0.01)  # Best practice to have a short delay to avoid working too hard between loop iterations.
 
     # Best practice to leave the LEDs on after you finish a program so you don't put away the robot while still on.
