@@ -15,6 +15,7 @@ import ev3dev.ev3 as ev3
 import math
 import time
 
+
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
     
@@ -29,10 +30,9 @@ class Snatch3r(object):
         assert self.left_motor.connected
         assert self.right_motor.connected
 
-
     def drive_inches(self, distance, sp):
+        """Drives the robot a given number of inches at a given speed"""
         ev3.Sound.speak("Driving")
-        print("Driving " + str(distance) + " inches at " + str(sp))
         self.left_motor.run_to_rel_pos(position_sp=distance*90, speed_sp=sp)
         self.right_motor.run_to_rel_pos(position_sp=distance * 90, speed_sp=sp)
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
@@ -40,9 +40,9 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
         ev3.Sound.speak("Goodbye")
 
-
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
-       ev3.Sound.speak("Turning")
+        """Turns the robot a given number of degrees( left is positive, right is negative )"""
+        ev3.Sound.speak("Turning")
         self.left_motor.run_to_rel_pos(position_sp=-4*1.24*degrees_to_turn, speed_sp=turn_speed_sp)
         self.right_motor.run_to_rel_pos(position_sp=4*1.24*degrees_to_turn, speed_sp=turn_speed_sp)
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
