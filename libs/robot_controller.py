@@ -32,6 +32,7 @@ class Snatch3r(object):
 
     def drive_inches(self, distance, sp):
         ev3.Sound.speak("Driving")
+        print("Driving " + str(distance) + " inches at " + str(sp))
         self.left_motor.run_to_rel_pos(position_sp=distance*90, speed_sp=sp)
         self.right_motor.run_to_rel_pos(position_sp=distance * 90, speed_sp=sp)
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
@@ -41,6 +42,7 @@ class Snatch3r(object):
 
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
+        print("Turning " + str(degrees_to_turn) + " degrees")
         self.left_motor.run_to_rel_pos(position_sp=-4*1.24*degrees_to_turn, speed_sp=turn_speed_sp)
         self.right_motor.run_to_rel_pos(position_sp=4*1.24*degrees_to_turn, speed_sp=turn_speed_sp)
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
