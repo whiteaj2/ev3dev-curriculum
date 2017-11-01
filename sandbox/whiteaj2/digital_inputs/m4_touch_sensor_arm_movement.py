@@ -92,7 +92,7 @@ def arm_up(arm_motor, touch_sensor):
     """
     # DONE: 4. Implement the arm up movement by fixing the code below
     # Command the arm_motor to run forever in the positive direction at max speed.
-    # Create a while loop that will block code execution until the touch sensor is pressed.
+    # Create a while loop thatc will block code execution until the touch sensor is pressed.
     #   Within the loop sleep for 0.01 to avoid running code too fast.
     # Once past the loop the touch sensor must be pressed. Stop the arm motor using the brake stop action.
     # Make a beep sound

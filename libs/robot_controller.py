@@ -26,7 +26,7 @@ class Snatch3r(object):
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
-        self.touch_sensor = ev3.TouchSensor
+        self.touch_sensor = ev3.TouchSensor()
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
@@ -55,12 +55,14 @@ class Snatch3r(object):
 
     def arm_calibration(self):
         self.arm_motor.run_forever(speed_sp=900)
+        print("Going up")
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
         self.arm_motor.stop(stop_action="brake")
 
+        print("Going down")
         self.arm_motor.run_to_rel_pos(position_sp=-14.2 * 360)
-        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.arm_motor.wait_while(self.arm_motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
         self.arm_motor.position = 0
 
@@ -76,9 +78,8 @@ class Snatch3r(object):
         self.arm_motor.wait_while(self.arm_motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
-    def shutdown(self, button_state, dc):
-        if (button_state):
-            dc.running = False
+    def shutdown(self):
+        exit()
 
 
 
