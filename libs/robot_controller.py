@@ -25,10 +25,14 @@ class Snatch3r(object):
         # Connect two large motors on output ports B and C
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        self.touch_sensor = ev3.TouchSensor
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
         assert self.right_motor.connected
+        assert self.arm_motor.connected
+        assert self.touch_sensor.connected
 
     def drive_inches(self, distance, sp):
         """Drives the robot a given number of inches at a given speed"""
@@ -48,3 +52,33 @@ class Snatch3r(object):
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
         self.right_motor.wait_while(self.right_motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
+
+    def arm_calibration(self):
+        self.arm_motor.run_forever(speed_sp=900)
+        while not self.touch_sensor.is_pressed:
+            time.sleep(0.01)
+        self.arm_motor.stop(stop_action="brake")
+
+        self.arm_motor.run_to_rel_pos(position_sp=-14.2 * 360)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
+        self.arm_motor.position = 0
+
+    def arm_up(self):
+        self.arm_motor.run_forever(speed_sp=900)
+        while not self.touch_sensor.is_pressed:
+            time.sleep(0.01)
+        self.arm_motor.stop(stop_action="brake")
+        ev3.Sound.beep().wait()
+
+    def arm_down(self):
+        self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=900)
+        self.arm_motor.wait_while(self.arm_motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
+
+    def shutdown(self, button_state, dc):
+        if (button_state):
+            dc.running = False
+
+
+
