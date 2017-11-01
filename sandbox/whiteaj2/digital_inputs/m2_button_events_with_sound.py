@@ -122,7 +122,7 @@ def handle_right_button(button_state):
 
 
 
-# TODO: 6. Implement the handle_shutdown function.
+# DONE: 6. Implement the handle_shutdown function.
 #   Function signature should be:
 #       def handle_shutdown(button_state, dc):
 #   When the button is pressed (state is True)
@@ -144,7 +144,7 @@ def handle_shutdown(button_state, dataContainer):
 
 
 
-# TODO: 7. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
+# DONE: 7. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
 #
 # Observations you should make, button events are better because you get called only once per press, however, callbacks
 #   make it a bit tricker to pass data around (which is why we used the DataContainer object).
