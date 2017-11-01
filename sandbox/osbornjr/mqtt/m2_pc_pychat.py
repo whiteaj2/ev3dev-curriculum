@@ -31,7 +31,7 @@ def main():
     # The goal is simply for you to become more comfortable with how subscriptions and publish work with MQTT
     # Review the code to see if there are any other useful things you can learn.
 
-    # TODO: 3. Call over a TA or instructor to sign your team's checkoff sheet.
+    # Done: 3. Call over a TA or instructor to sign your team's checkoff sheet.
     #
     # Observations you should make:
     # You published messages to "legoXX/{team_member_name}"  (where XX is set in libs/mqtt_remote_method_calls.py)
