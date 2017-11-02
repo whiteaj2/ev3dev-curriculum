@@ -35,7 +35,7 @@ def main():
     # DONE: 2. Setup an mqtt_client.  Notice that since you don't need to receive any messages you do NOT need to have
     # a MyDelegate class.  Simply construct the MqttClient with no parameter in the constructor (easy).
     mqtt_client = com.MqttClient()  # Delete this line, it was added temporarily so that the code we gave you had no errors.
-    mqtt_client.connect_to_pc(lego_robot_number=8)
+    mqtt_client.connect_to_ev3(lego_robot_number=8)
 
     root = tkinter.Tk()
     root.title("MQTT Remote")
@@ -118,19 +118,21 @@ def main():
 # ----------------------------------------------------------------------
 # TODO: 4. Implement the functions for the drive button callbacks.
 def forward_button_handle(mqtt_client, left_speed_entry, right_speed_entry):
-    mqtt_client.send_message("drive", [left_speed_entry.get(), right_speed_entry.get()])
+    mqtt_client.send_message("drive", [int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 def left_button_handle(mqtt_client, left_speed_entry, right_speed_entry):
-    mqtt_client.send_message("drive", [-left_speed_entry.get(), right_speed_entry.get()])
+    mqtt_client.send_message("drive", [-int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 def right_button_handle(mqtt_client, left_speed_entry, right_speed_entry):
-    mqtt_client.send_message("drive", [left_speed_entry.get(), -right_speed_entry.get()])
+    mqtt_client.send_message("drive", [int(left_speed_entry.get()), -int(right_speed_entry.get())])
 
 def back_button_handle(mqtt_client, left_speed_entry, right_speed_entry):
-    mqtt_client.send_message("drive", [-left_speed_entry.get(), -right_speed_entry.get()])
+    mqtt_client.send_message("drive", [-int(left_speed_entry.get()), -int(right_speed_entry.get())])
 
 def stop_button_handle(mqtt_client):
     mqtt_client.send_message("stop")
+
+
 
 
 # TODO: 5. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.  This is the final one!
