@@ -27,12 +27,16 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
+        self.left_led = ev3.Leds.LEFT
+        self.right_led = ev3.Leds.RIGHT
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
         assert self.right_motor.connected
         assert self.arm_motor.connected
         assert self.touch_sensor.connected
+
+        self.running = None
 
     def drive_inches(self, distance, sp):
         """Drives the robot a given number of inches at a given speed"""
@@ -79,7 +83,25 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def shutdown(self):
-        exit()
+        self.left_motor.stop(stop_action="brake")
+        self.right_motor.stop(stop_action="brake")
+        ev3.Leds.set_color(self.left_led, ev3.Leds.GREEN)
+        ev3.Leds.set_color(self.right_led, ev3.Leds.GREEN)
+
+        self.running = False
+
+    def loop_forever(self):
+        self.running = True
+        while self.running:
+            time.sleep(0.01)
+
+    def drive(self, left_motor_speed, right_motor_speed):
+        self.left_motor.run_forever(speed_sp=left_motor_speed)
+        self.right_motor.run_forever(speed_sp=right_motor_speed)
+
+    def stop(self):
+        self.left_motor.stop(stop_action="brake")
+        self.right_motor.stop(stop_action="brake")
 
 
 

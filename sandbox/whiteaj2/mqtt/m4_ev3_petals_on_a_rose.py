@@ -145,7 +145,7 @@ def main():
     my_delegate = GameMaster()
     mqtt_client = com.MqttClient(my_delegate)
     my_delegate.mqtt_client = mqtt_client
-    mqtt_client.connect_to_pc()
+    mqtt_client.connect_to_pc(lego_robot_number=8)
     # mqtt_client.connect_to_pc("35.194.247.175")  # Off campus use EV3 as broker.
     my_delegate.loop_forever()
     teary_eyes = Image.open("/home/robot/csse120/assets/images/ev3_lego/eyes_tear.bmp")
