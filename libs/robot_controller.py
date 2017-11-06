@@ -30,6 +30,8 @@ class Snatch3r(object):
         self.left_led = ev3.Leds.LEFT
         self.right_led = ev3.Leds.RIGHT
         self.color_sensor = ev3.ColorSensor()
+        self.ir_sensor = ev3.InfraredSensor()
+        self.pixy = ev3.Sensor(driver_name="pixy-lego")
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
@@ -37,6 +39,8 @@ class Snatch3r(object):
         assert self.arm_motor.connected
         assert self.touch_sensor.connected
         assert self.color_sensor
+        assert self.ir_sensor
+        assert self.pixy
 
         self.running = None
 
@@ -106,6 +110,41 @@ class Snatch3r(object):
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
 
+    def seek_beacon(self, beacon_channel, forward_speed, turn_speed):
+        beacon_seeker = ev3.BeaconSeeker(channel=beacon_channel)
+        while not self.touch_sensor.is_pressed:
+            current_heading = beacon_seeker.heading
+            current_distance = beacon_seeker.distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("IR Remote not found. Distance is -128")
+                self.stop()
+            else:
 
+                if math.fabs(current_heading) < 2:
+                    # Close enough of a heading to move forward
+                    print("On the right heading. Distance: ", current_distance)
+                    # You add more!
+                    if current_distance <= 0:
+                        self.stop()
+                        return True
+                    elif current_distance > 0:
+                        self.drive(forward_speed, forward_speed)
+                        time.sleep(0.10)
+                elif math.fabs(current_heading) >= 2 and math.fabs(current_heading) <= 10:
+                    print("Spinning to get the right heading. Distance: ", current_distance)
+                    if current_heading < 0:
+                        print("Heading is too far to the right. Distance: ", current_distance)
+                        self.drive(-turn_speed, turn_speed)
+                        time.sleep(0.01)
+                    elif current_heading > 0:
+                        print(" Heading is too far to the left. Distance: ", current_distance)
+                        time.sleep(0.01)
+                        self.drive(turn_speed, -turn_speed)
+                else:
+                    print("No IR sensor found in acceptable heading range.")
 
-
+            time.sleep(0.1)
+        print("Touch sensor Pressed, Aborting")
+        self.stop()
+        return False

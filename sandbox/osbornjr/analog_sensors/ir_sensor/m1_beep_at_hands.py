@@ -8,8 +8,8 @@ Check every 0.1 seconds for a hand and print the proximity value each check.
 
 Setup the program to continue to run until the user presses the touch sensor.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.  February 2017.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Joshua Osborne.  February 2017.
+"""  # Done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
 import time
@@ -35,6 +35,10 @@ def main():
         #   self.ir_sensor = ev3.InfraredSensor()
         #   assert self.ir_sensor
         # Then here you can use a command like robot.ir_sensor.proximity
+        print('Hand Proximity: ', robot.ir_sensor.proximity)
+        while robot.ir_sensor.proximity <= 10:
+            print('Hand Proximity: ', robot.ir_sensor.proximity)
+            ev3.Sound.beep(time.sleep(1.5))
 
         time.sleep(0.1)
 

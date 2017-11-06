@@ -41,8 +41,11 @@ def main():
     robot = robo.Snatch3r()
     try:
         while True:
-            found_beacon = robot.seek_beacon()
+            found_beacon = robot.seek_beacon(beacon_channel=1, forward_speed=300, turn_speed=100)
             if found_beacon:
+                robot.drive(100, 100)
+                time.sleep(1)
+                robot.stop()
                 ev3.Sound.speak("I got the beacon")
                 robot.arm_up()
                 time.sleep(1)
