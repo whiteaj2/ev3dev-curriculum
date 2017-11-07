@@ -31,7 +31,7 @@ def main():
         while True:
             beacon_found = seek_beacon(robot)
 
-            # TODO: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
+            # Done: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
             # beacon" if the return value is True.  (i.e. don't say "Found the beacon" if the attempts was cancelled.)
             if beacon_found == True:
                 ev3.Sound.speak("Found the beacon")
