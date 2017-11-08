@@ -43,11 +43,13 @@ def main():
             #   self.color_sensor = ev3.ColorSensor()
             #   assert self.color_sensor
             # Then here you can use a command like robot.color_sensor.reflected_light_intensity
+            white_level = robot.color_sensor.reflected_light_intensity
 
             print("New white level is {}.".format(white_level))
         elif command_to_run == 'b':
             print("Calibrate the black light level")
             # TODO: 3. Read the reflected_light_intensity property of the color sensor and set black_level
+            black_level = robot.color_sensor.reflected_light_intensity
 
             print("New black level is {}.".format(black_level))
         elif command_to_run == 'f':
@@ -78,8 +80,20 @@ def follow_the_line(robot, white_level, black_level):
     # should drive straight or turn to the right.  You will need to test and refine your code until it works well.
     # Optional extra - For a harder challenge could you drive on the black line and handle left or right turns?
 
+    while not robot.touch_sensor.is_pressed:
+        if robot.color_sensor.reflected_light_intensity <= black_level + 30:
+            robot.drive(400, 400)
+            time.sleep(0.25)
+            robot.stop()
+        elif robot.color_sensor.reflected_light_intensity >= white_level - 30:
+            robot.drive(800, 100)
+            time.sleep(0.2)
+            robot.stop()
+
+
     robot.stop()
     ev3.Sound.speak("Done")
+
 
 
 # TODO: 6. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.

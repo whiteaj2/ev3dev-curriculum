@@ -38,13 +38,14 @@ def main():
         # Then here you can use a command like width = robot.pixy.value(3)
 
         X = pixy.value(3)
+        Y = pixy.value(4)
 
         print("value1: X", pixy.value(1))
         print("value2: Y", pixy.value(2))
         print("value3: Width", pixy.value(3))
         print("value4: Height", pixy.value(4))
 
-        if X > 0:
+        if X > 2 and Y > 2:
             ev3.Sound.beep()
             time.sleep(1)
 

@@ -40,7 +40,7 @@ class Snatch3r(object):
         assert self.touch_sensor.connected
         assert self.color_sensor
         assert self.ir_sensor
-        assert self.pixy
+        assert self.pixy.connected
 
         self.running = None
 
