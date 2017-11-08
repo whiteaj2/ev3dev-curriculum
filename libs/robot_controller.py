@@ -32,6 +32,12 @@ class Snatch3r(object):
         self.color_sensor = ev3.ColorSensor()
         self.ir_sensor = ev3.InfraredSensor()
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
+        self.left_speed = 0
+        self.right_speed = 0
+        #Theta is the angle the front of the robot makes with the left of the screen
+        self.theta = 0
+        self.x_pos = 0
+        self.y_pos=0
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
@@ -49,8 +55,12 @@ class Snatch3r(object):
         ev3.Sound.speak("Driving")
         self.left_motor.run_to_rel_pos(position_sp=distance*90, speed_sp=sp)
         self.right_motor.run_to_rel_pos(position_sp=distance * 90, speed_sp=sp)
+        self.left_speed = sp
+        self.right_speed = sp
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
         self.right_motor.wait_while(self.right_motor.STATE_RUNNING)
+        self.left_speed = 0
+        self.right_speed = 0
         ev3.Sound.beep().wait()
         ev3.Sound.speak("Goodbye")
 
@@ -61,6 +71,7 @@ class Snatch3r(object):
         self.right_motor.run_to_rel_pos(position_sp=4*1.24*degrees_to_turn, speed_sp=turn_speed_sp)
         self.left_motor.wait_while(self.left_motor.STATE_RUNNING)
         self.right_motor.wait_while(self.right_motor.STATE_RUNNING)
+        self.theta += degrees_to_turn
         ev3.Sound.beep().wait()
 
     def arm_calibration(self):
@@ -104,11 +115,15 @@ class Snatch3r(object):
     def drive(self, left_motor_speed, right_motor_speed):
         self.left_motor.run_forever(speed_sp=left_motor_speed)
         self.right_motor.run_forever(speed_sp=right_motor_speed)
+        self.left_speed = left_motor_speed
+        self.right_speed = right_motor_speed
 
     def stop(self):
         #turns off motors
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
+        self.left_speed = 0
+        self.right_speed = 0
 
     def seek_beacon(self, beacon_channel, forward_speed, turn_speed):
         beacon_seeker = ev3.BeaconSeeker(channel=beacon_channel)
