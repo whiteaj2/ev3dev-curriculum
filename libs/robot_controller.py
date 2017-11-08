@@ -34,7 +34,7 @@ class Snatch3r(object):
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         self.left_speed = 0
         self.right_speed = 0
-        #Theta is the angle the front of the robot makes with the left of the screen
+        #Theta is the angle the front of the robot makes with the left vertical on the screen
         self.theta = 0
         self.x_pos = 0
         self.y_pos=0
