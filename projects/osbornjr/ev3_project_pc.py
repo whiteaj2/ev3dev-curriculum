@@ -60,7 +60,7 @@ def main():
 
     clear_button = ttk.Button(main_frame, text="Clear")
     clear_button.grid(row=3, column=0)
-    clear_button["command"] = lambda: clear(canvas)
+    clear_button["command"] = lambda: clear(canvas, mqtt_client)
 
     quit_button = ttk.Button(main_frame, text="Quit")
     quit_button.grid(row=3, column=2)
@@ -95,15 +95,16 @@ def left_mouse_click(event, mqtt_client):
     mqtt_client.send_message("on_circle_draw",[event.x, event.y])
 
 
-def clear(canvas):
+def clear(canvas, mqtt_client):
     """Clears the canvas contents"""
     canvas.delete("all")
+    mqtt_client.send_message("clear")
     points.clear()
 
 def connect_dots(canvas, mqtt_client):
     if len(points) > 1:
         for k in range(len(points)-1):
-            mqtt_client.send_message("connect_dots", [points[k][0], points[k][1], points[k+1][0], points[k+1][1]])
+            mqtt_client.send_message("connect_dots")
             canvas.create_line(points[k][0], points[k][1], points[k+1][0], points[k+1][1], fill="black", dash=(4,2))
         print(points)
 
