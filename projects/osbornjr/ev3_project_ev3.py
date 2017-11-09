@@ -69,9 +69,11 @@ def main():
         mqtt_client = com.MqttClient(my_delegate)
         mqtt_client.connect_to_pc(lego_robot_number=8)
 
-        teary_eyes = Image.open("/home/robot/csse120/assets/images/ev3_lego/eyes_tear.bmp")
-        my_delegate.lcd.image.paste(teary_eyes, (0, 0))
+        WeAreNumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
+        my_delegate.lcd.image.paste(WeAreNumberOne, (0, 0))
         my_delegate.lcd.update()
+
+        ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
 
         time.sleep(0.1)
 
