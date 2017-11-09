@@ -63,7 +63,7 @@ class Snatch3r(object):
         self.left_speed = 0
         self.right_speed = 0
         ev3.Sound.beep().wait()
-        ev3.Sound.speak("Goodbye")
+        # ev3.Sound.speak("Goodbye")
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
         """Turns the robot a given number of degrees( left is positive, right is negative )"""

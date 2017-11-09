@@ -12,10 +12,12 @@ class MyDelegateEV3(object):
 
     def __init__(self):
         self.points = []
-        self.running = True
+        self.running = False
         self.mqtt_client = None
         self.lcd = ev3.Screen()
         self.scale = 0.05
+        self.speed = 100
+        self.turn_speed = 100
 
     def drive_bot(self, speed):
         self.speed = speed
@@ -57,27 +59,37 @@ class MyDelegateEV3(object):
     def clear(self):
         self.points.clear()
 
+    def loop_forever(self):
+        self.running = True
+        while not robot.touch_sensor.is_pressed and self.running:
+            # Do nothing while waiting for commands
+            time.sleep(0.01)
+        self.mqtt_client.close()
+        # Copied from robot.shutdown
+        # ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
+
+        print("Goodbye")
+        ev3.Sound.speak("Goodbye").wait()
+
+
 def main():
     print("-----------------------------------")
     print("            ev3_project_ev3            ")
     print("-----------------------------------")
     ev3.Sound.speak("ev3_project_ev3").wait()
 
-    while not robot.touch_sensor.is_pressed:
+    my_delegate = MyDelegateEV3()
+    mqtt_client = com.MqttClient(my_delegate)
+    mqtt_client.connect_to_pc(lego_robot_number=8)
 
-        my_delegate = MyDelegateEV3()
-        mqtt_client = com.MqttClient(my_delegate)
-        mqtt_client.connect_to_pc(lego_robot_number=8)
+    number_one = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
+    my_delegate.lcd.image.paste(number_one, (0, 0))
+    my_delegate.lcd.update()
 
-        WeAreNumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
-        my_delegate.lcd.image.paste(WeAreNumberOne, (0, 0))
-        my_delegate.lcd.update()
+    time.sleep(0.1)
 
-        ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
+    my_delegate.loop_forever()
 
-        time.sleep(0.1)
 
-    print("Goodbye")
-    ev3.Sound.speak("Goodbye").wait()
 
 main()
