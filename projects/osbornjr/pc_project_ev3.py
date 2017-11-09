@@ -151,8 +151,8 @@ def clear(canvas, mqtt_client, list_box):
 def connect_dots(canvas, mqtt_client):
     if len(points) > 1:
         for k in range(len(points)-1):
-            mqtt_client.send_message("connect_dots")
             canvas.create_line(points[k][0], points[k][1], points[k+1][0], points[k+1][1], fill="black", dash=(4,2))
+        mqtt_client.send_message("connect_dots")
         print("Sent list of points: ", points)
 
     else:

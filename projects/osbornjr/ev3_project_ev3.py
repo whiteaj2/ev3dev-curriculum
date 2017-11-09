@@ -53,6 +53,7 @@ class MyDelegateEV3(object):
             robot.drive_inches(self.distance, self.speed)
             time.sleep(1)
             print("Turn Angle: ", self.angle, "Drive Distance", self.distance)
+
         print("Final Destination Reached")
         ev3.Sound.speak("Destination Reached").wait()
 
@@ -61,15 +62,25 @@ class MyDelegateEV3(object):
 
     def loop_forever(self):
         self.running = True
+
         while not robot.touch_sensor.is_pressed and self.running:
             # Do nothing while waiting for commands
+
             time.sleep(0.01)
-        self.mqtt_client.close()
+        self.exit()
         # Copied from robot.shutdown
-        # ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
 
         print("Goodbye")
         ev3.Sound.speak("Goodbye").wait()
+
+    def exit(self):
+        self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
+        self.lcd.image.paste(self.NumberOne, (0,0))
+        self.lcd.update()
+        ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
+        time.sleep(1)
+        self.mqtt_client.close()
+
 
 
 def main():
@@ -80,14 +91,10 @@ def main():
 
     my_delegate = MyDelegateEV3()
     mqtt_client = com.MqttClient(my_delegate)
+    my_delegate.mqtt_client = mqtt_client
     mqtt_client.connect_to_pc(lego_robot_number=8)
 
-    number_one = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
-    my_delegate.lcd.image.paste(number_one, (0, 0))
-    my_delegate.lcd.update()
-
     time.sleep(0.1)
-
     my_delegate.loop_forever()
 
 

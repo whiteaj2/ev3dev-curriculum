@@ -148,7 +148,7 @@ def main():
     mqtt_client.connect_to_pc()
     # mqtt_client.connect_to_pc("35.194.247.175")  # Off campus use EV3 as broker.
     my_delegate.loop_forever()
-    teary_eyes = Image.open("/home/robot/csse120/assets/images/ev3_lego/eyes_tear.bmp")
+    teary_eyes = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
     my_delegate.lcd.image.paste(teary_eyes, (0, 0))
     my_delegate.lcd.update()
     print("If you ran via SSH and typed 'sudo chvt 6' earlier, don't forget to type")
