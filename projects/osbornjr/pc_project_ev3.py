@@ -100,7 +100,7 @@ def main():
     ext_frame = ttk.Frame(main_frame, padding=2)
     ext_frame.grid(row=4, column=6)
 
-    list_box = Listbox(ext_frame)
+    list_box = Listbox(ext_frame, selectmode=EXTENDED)
     list_box.insert(END, "List of points (X, Y)")
     list_box.grid(row=0, column=0, columnspan=1)
 
@@ -151,8 +151,8 @@ def clear(canvas, mqtt_client, list_box):
 def connect_dots(canvas, mqtt_client):
     if len(points) > 1:
         for k in range(len(points)-1):
-            mqtt_client.send_message("connect_dots")
             canvas.create_line(points[k][0], points[k][1], points[k+1][0], points[k+1][1], fill="black", dash=(4,2))
+        mqtt_client.send_message("connect_dots")
         print("Sent list of points: ", points)
 
     else:
@@ -167,7 +167,7 @@ def send_drive_speed(mqtt_client, drive_speed):
 # Sends the turn speed to the delegate using input from the slider
 def send_turn_speed(mqtt_client, turn_speed):
     print("Sending turn speed = {}".format(turn_speed))
-    mqtt_client.send_message("turn_bot", [turn_speed])
+    mqtt_client.send_message("drive_bot", [turn_speed])
     time.sleep(0.10)
 
 main()

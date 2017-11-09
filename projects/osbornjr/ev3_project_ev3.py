@@ -12,10 +12,12 @@ class MyDelegateEV3(object):
 
     def __init__(self):
         self.points = []
-        self.running = True
+        self.running = False
         self.mqtt_client = None
         self.lcd = ev3.Screen()
         self.scale = 0.05
+        self.speed = 100
+        self.turn_speed = 100
 
     def drive_bot(self, speed):
         self.speed = speed
@@ -51,11 +53,35 @@ class MyDelegateEV3(object):
             robot.drive_inches(self.distance, self.speed)
             time.sleep(1)
             print("Turn Angle: ", self.angle, "Drive Distance", self.distance)
+
         print("Final Destination Reached")
         ev3.Sound.speak("Destination Reached").wait()
 
     def clear(self):
         self.points.clear()
+
+    def loop_forever(self):
+        self.running = True
+
+        while not robot.touch_sensor.is_pressed and self.running:
+            # Do nothing while waiting for commands
+
+            time.sleep(0.01)
+        self.exit()
+        # Copied from robot.shutdown
+
+        print("Goodbye")
+        ev3.Sound.speak("Goodbye").wait()
+
+    def exit(self):
+        self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
+        self.lcd.image.paste(self.NumberOne, (0,0))
+        self.lcd.update()
+        ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
+        time.sleep(1)
+        self.mqtt_client.close()
+
+
 
 def main():
     print("-----------------------------------")
@@ -63,21 +89,14 @@ def main():
     print("-----------------------------------")
     ev3.Sound.speak("ev3_project_ev3").wait()
 
-    while not robot.touch_sensor.is_pressed:
+    my_delegate = MyDelegateEV3()
+    mqtt_client = com.MqttClient(my_delegate)
+    my_delegate.mqtt_client = mqtt_client
+    mqtt_client.connect_to_pc(lego_robot_number=8)
 
-        my_delegate = MyDelegateEV3()
-        mqtt_client = com.MqttClient(my_delegate)
-        mqtt_client.connect_to_pc(lego_robot_number=8)
+    time.sleep(0.1)
+    my_delegate.loop_forever()
 
-        WeAreNumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
-        my_delegate.lcd.image.paste(WeAreNumberOne, (0, 0))
-        my_delegate.lcd.update()
 
-        ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
-
-        time.sleep(0.1)
-
-    print("Goodbye")
-    ev3.Sound.speak("Goodbye").wait()
 
 main()
