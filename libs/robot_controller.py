@@ -38,6 +38,7 @@ class Snatch3r(object):
         self.theta = 0
         self.x_pos = 0
         self.y_pos=0
+        self.distance_driven = 0
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
