@@ -14,6 +14,7 @@
 import ev3dev.ev3 as ev3
 import math
 import time
+import random
 
 
 class Snatch3r(object):
@@ -125,6 +126,16 @@ class Snatch3r(object):
         self.right_motor.stop(stop_action="brake")
         self.left_speed = 0
         self.right_speed = 0
+
+    def drive_random(self):
+        turn_degrees = random.randrange(0,361)
+        speed = random.randrange(0,801)
+        rand_time = random.randrange(0,5)
+        self.turn_degrees(turn_degrees, 400)
+        self.drive(speed, speed)
+        time.sleep(rand_time)
+        self.stop()
+
 
     def seek_beacon(self, beacon_channel, forward_speed, turn_speed):
         beacon_seeker = ev3.BeaconSeeker(channel=beacon_channel)
