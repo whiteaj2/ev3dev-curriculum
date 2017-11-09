@@ -128,6 +128,8 @@ class Snatch3r(object):
         self.right_speed = 0
 
     def drive_random(self):
+        #Drives for a random amount of time at a random speed
+        #Returns the time driven in order to calculate distance
         turn_degrees = random.randrange(0,361)
         speed = random.randrange(0,801)
         rand_time = random.randrange(0,5)
@@ -135,6 +137,7 @@ class Snatch3r(object):
         self.drive(speed, speed)
         time.sleep(rand_time)
         self.stop()
+        return rand_time
 
 
     def seek_beacon(self, beacon_channel, forward_speed, turn_speed):
