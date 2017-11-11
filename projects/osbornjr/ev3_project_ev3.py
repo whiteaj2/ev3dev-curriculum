@@ -19,6 +19,9 @@ class MyDelegateEV3(object):
         self.speed = 100
         self.turn_speed = 100
 
+    def change_scale(self, scale):
+        self.scale = scale
+
     def drive_bot(self, speed):
         self.speed = speed
 
@@ -63,7 +66,7 @@ class MyDelegateEV3(object):
     def loop_forever(self):
         self.running = True
 
-        while not robot.touch_sensor.is_pressed and self.running:
+        while not robot.touch_sensor.is_pressed and self.running and robot.ir_sensor.proximity > 5:
             # Do nothing while waiting for commands
 
             time.sleep(0.01)
@@ -85,25 +88,20 @@ class MyDelegateEV3(object):
             self.lcd.image.paste(self.NumberOne, (0, 0))
             self.lcd.update()
             ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
-        elif song == "TakeOnMe":
-            self.MineOn = Image.open("/home/robot/csse120/assets/images/ev3_project_images/MinrOn.bmp")
+        elif song == "MineOn":
+            self.MineOn = Image.open("/home/robot/csse120/assets/images/ev3_project_images/MineOn.bmp")
             self.lcd.image.paste(self.MineOn, (0, 0))
             self.lcd.update()
-            ev3.Sound.play("/home/robot/csse120/assets/sounds/Take_on_me.wav")
+            ev3.Sound.play("/home/robot/csse120/assets/sounds/MineOn.wav")
         elif song == "AllStar":
             self.Shrek = Image.open("/home/robot/csse120/assets/images/ev3_project_images/Shrek.bmp")
             self.lcd.image.paste(self.Shrek, (0, 0))
             self.lcd.update()
-            ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
+            ev3.Sound.play("/home/robot/csse120/assets/sounds/AllStar.wav")
         else:
             print("Error: Unknown song")
 
     def exit(self):
-        self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
-        self.lcd.image.paste(self.NumberOne, (0,0))
-        self.lcd.update()
-        ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
-        time.sleep(10)
         self.mqtt_client.close()
 
 
