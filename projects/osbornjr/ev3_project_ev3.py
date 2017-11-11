@@ -73,12 +73,37 @@ class MyDelegateEV3(object):
         print("Goodbye")
         ev3.Sound.speak("Goodbye").wait()
 
+    def play_song(self, song):
+        self.song = song
+        if song == "NumberOneShort":
+            self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
+            self.lcd.image.paste(self.NumberOne, (0,0))
+            self.lcd.update()
+            ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
+        elif song ==  "NumberOneLong":
+            self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
+            self.lcd.image.paste(self.NumberOne, (0, 0))
+            self.lcd.update()
+            ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
+        elif song == "TakeOnMe":
+            self.MineOn = Image.open("/home/robot/csse120/assets/images/ev3_project_images/MinrOn.bmp")
+            self.lcd.image.paste(self.MineOn, (0, 0))
+            self.lcd.update()
+            ev3.Sound.play("/home/robot/csse120/assets/sounds/Take_on_me.wav")
+        elif song == "AllStar":
+            self.Shrek = Image.open("/home/robot/csse120/assets/images/ev3_project_images/Shrek.bmp")
+            self.lcd.image.paste(self.Shrek, (0, 0))
+            self.lcd.update()
+            ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
+        else:
+            print("Error: Unknown song")
+
     def exit(self):
         self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
         self.lcd.image.paste(self.NumberOne, (0,0))
         self.lcd.update()
         ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOneFull.wav")
-        time.sleep(1)
+        time.sleep(10)
         self.mqtt_client.close()
 
 

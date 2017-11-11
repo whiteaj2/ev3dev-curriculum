@@ -104,6 +104,18 @@ def main():
     list_box.insert(END, "List of points (X, Y)")
     list_box.grid(row=0, column=0, columnspan=1)
 
+    # Code for drop-down menu
+
+    song = StringVar(main_frame)
+    song.set("Pick Song")
+
+    drop_menu = OptionMenu(main_frame, song, "NumberOneShort","NumberOneLong", "TakeOnMe", "AllStar")
+    drop_menu.grid(row=0, column=5, columnspan = 1)
+
+    confirm_song = ttk.Button(main_frame, text="Play Song")
+    confirm_song.grid(row=1, column=5, columnspan = 1)
+    confirm_song["command"] = lambda: pick_song(song, mqtt_client)
+
     #Sending commands to the delegate
 
     my_delegate = MyDelegatePC(canvas)
@@ -113,6 +125,15 @@ def main():
     root.mainloop()
 
 # Function to exit the program
+def pick_song(song, mqtt_client):
+    if song.get() != "Pick Song":
+        print("Song Choice: ", song.get())
+        mqtt_client.send_message("play_song", [song.get()])
+    else:
+        print("Please choose a song")
+
+
+
 def quit_program(mqtt_client):
     mqtt_client.close()
     exit()
