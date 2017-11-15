@@ -129,13 +129,13 @@ class Snatch3r(object):
     def drive_random(self):
         #Drives for a random amount of time at a random speed
         #Returns the time driven in order to calculate the distance travelled
-        turn_degrees = random.randrange(0,361)
-        speed = random.randrange(0,801)
-        rand_time = random.randrange(0,5)
+        turn_degrees = random.randrange(0, 30)
+        speed = random.randrange(200,801)
+        rand_time = random.randrange(1,4)
         self.turn_degrees(turn_degrees, 400)
         self.drive(speed, speed)
-        time.sleep(rand_time)
-        self.stop()
+        self.left_speed = speed
+        self.right_speed = speed
         return rand_time
 
 
