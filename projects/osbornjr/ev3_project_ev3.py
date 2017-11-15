@@ -37,8 +37,11 @@ class MyDelegateEV3(object):
 
     def connect_dots(self):
         for k in range(len(self.points)-1):
-            self.angle = math.atan((self.points[k][1] - self.points[k-1][1]) / (self.points[k][0] - self.points[k-1][0])) * (180 / math.pi)
-            robot.turn_degrees(self.angle, self.turn_speed)
+            if (self.points[k][0] - self.points[k - 1][0]) != 0:
+                self.angle = math.atan((self.points[k][1] - self.points[k-1][1]) / (self.points[k][0] - self.points[k-1][0])) * (180 / math.pi)
+                robot.turn_degrees(self.angle, self.turn_speed)
+            elif (self.points[k][0] - self.points[k - 1][0]) == 0:
+                self.angle = 0
             if self.angle < 180:
                 print("Left turn neccesary")
                 ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
@@ -52,8 +55,11 @@ class MyDelegateEV3(object):
                 ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.AMBER)
                 ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.AMBER)
             time.sleep(1)
-            self.distance = math.sqrt((self.points[k][1] - self.points[k-1][1]) ** 2 + (self.points[k][0] - self.points[k-1][0]) ** 2) * self.scale
-            robot.drive_inches(self.distance, self.speed)
+            if math.sqrt((self.points[k][1] - self.points[k-1][1]) ** 2 + (self.points[k][0] - self.points[k-1][0]) ** 2) * self.scale != 0:
+                self.distance = math.sqrt((self.points[k][1] - self.points[k-1][1]) ** 2 + (self.points[k][0] - self.points[k-1][0]) ** 2) * self.scale
+                robot.drive_inches(self.distance, self.speed)
+            elif math.sqrt((self.points[k][1] - self.points[k-1][1]) ** 2 + (self.points[k][0] - self.points[k-1][0]) ** 2) * self.scale == 0:
+                self.distance = 0
             time.sleep(1)
             print("Turn Angle: ", self.angle, "Drive Distance", self.distance)
 
@@ -66,7 +72,7 @@ class MyDelegateEV3(object):
     def loop_forever(self):
         self.running = True
 
-        while not robot.touch_sensor.is_pressed and self.running and robot.ir_sensor.proximity > 5:
+        while not robot.touch_sensor.is_pressed and self.running and robot.ir_sensor.proximity >= 5:
             # Do nothing while waiting for commands
 
             time.sleep(0.01)
@@ -83,7 +89,7 @@ class MyDelegateEV3(object):
             self.lcd.image.paste(self.NumberOne, (0,0))
             self.lcd.update()
             ev3.Sound.play("/home/robot/csse120/assets/sounds/WeAreNumberOne.wav")
-        elif song ==  "NumberOneLong":
+        elif song ==  "NumberOneFull":
             self.NumberOne = Image.open("/home/robot/csse120/assets/images/ev3_project_images/WeAreNumberOne.bmp")
             self.lcd.image.paste(self.NumberOne, (0, 0))
             self.lcd.update()

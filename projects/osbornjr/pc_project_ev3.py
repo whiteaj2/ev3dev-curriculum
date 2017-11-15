@@ -111,7 +111,7 @@ def main():
     label7 = ttk.Label(ext_frame, text=instructions7)
     label7.grid(columnspan=1, row=1, column=1)
 
-    room_scale = Scale(ext_frame, from_=0, to=100, orient=VERTICAL)
+    room_scale = Scale(ext_frame, from_=0, to=20, orient=VERTICAL)
     room_scale.grid(row=0, column=0, columnspan=1)
     room_scale["command"] = lambda event: send_scale(mqtt_client, room_scale.get())
 
@@ -120,7 +120,7 @@ def main():
     song = StringVar(main_frame)
     song.set("Pick Song")
 
-    drop_menu = OptionMenu(main_frame, song, "NumberOneShort","NumberOneLong", "MineOn", "AllStar")
+    drop_menu = OptionMenu(main_frame, song, "NumberOneShort","NumberOneFull", "MineOn", "AllStar")
     drop_menu.grid(row=0, column=5, columnspan = 1)
 
     #Sending commands to the delegate
